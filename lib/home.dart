@@ -44,6 +44,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        flexibleSpace: Image(
+          image: AssetImage("asset/th.jpg"),
+          fit: BoxFit.cover,
+        ),
+        backgroundColor: Colors.black,
+      ),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
@@ -53,7 +60,10 @@ class _HomePageState extends State<HomePage> {
             const Text.rich(TextSpan(children: [
               TextSpan(
                   text: "Discover",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)),
               TextSpan(
                   text: "The ISRO",
                   style: TextStyle(
@@ -90,21 +100,22 @@ class _HomePageState extends State<HomePage> {
                             Text(
                               snapshot.data![index].name.toString(),
                               style: const TextStyle(
-                                  color: const Color.fromARGB(255, 0, 0, 0)),
+                                  color: Color.fromARGB(255, 255, 255, 255)),
                             ),
                             Text(
                               snapshot.data![index].link.toString(),
-                              style: const TextStyle(color: Colors.blue),
+                              style: const TextStyle(
+                                  color: Color.fromARGB(255, 0, 140, 255)),
                             ),
                             Text(
                               snapshot.data![index].payload.toString(),
                               style: const TextStyle(
-                                  color: Color.fromARGB(255, 34, 0, 255)),
+                                  color: Color.fromARGB(255, 172, 159, 255)),
                             ),
                             Text(
                               snapshot.data![index].missionStatus.toString(),
                               style: const TextStyle(
-                                  color: Color.fromARGB(255, 0, 83, 12)),
+                                  color: Color.fromARGB(255, 0, 255, 38)),
                             ),
                             Card(
                               child: Column(
@@ -136,14 +147,31 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       )),
+      backgroundColor: Color.fromARGB(255, 5, 0, 59),
     );
   }
-  
-   showDialogBox()=>showCupertinoDialog<String>(context: context, builder: (BuildContext context) => CupertinoAlertDialog(
-    title: const Text("No Connection"),
-    content: const Text('Please check Internet'),
-    actions:<Widget> [
-      TextButton(onPressed: (){}, child: Text("OK"))
-    ],
-   ));
+
+  showDialogBox() => showCupertinoDialog<String>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+            title: const Text("No Connection"),
+            content: const Text('Please check Internet'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () async {
+                    Navigator.pop(context, "Cancel");
+                    setState(() => isAlertSet = false);
+                    isDeviceConnected =
+                        await InternetConnectionChecker().hasConnection;
+                    if (!isDeviceConnected) {
+                      showDialogBox();
+                      setState(
+                        () => isAlertSet = true,
+                      );
+                    }
+                    ;
+                  },
+                  child: Text("OK")),
+            ],
+          ));
 }
