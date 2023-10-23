@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:newsapp/models/spaceResponse.dart';
 
-class NewsApiServices {
+class SpaceApiServices {
   final String _url = "https://services.isrostats.in/api/launches";
 
   Dio? _dio;
 
-  NewsApiServices() {
+  SpaceApiServices() {
     _dio = Dio();
   }
 

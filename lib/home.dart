@@ -83,9 +83,10 @@ class _HomePageState extends State<HomePage> {
             ),
             Expanded(
                 child: FutureBuilder<List<Space>>(
-              future: NewsApiServices().fetchSpaceArticle(),
+              future: SpaceApiServices().fetchSpaceArticle(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
+                  
                   return const Center(
                       child: CircularProgressIndicator(
                     backgroundColor: Colors.redAccent,
